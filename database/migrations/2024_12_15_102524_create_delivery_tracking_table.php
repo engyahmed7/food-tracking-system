@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('delivery_tracking', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('order_id')->nullable()
+                ->constrained('orders')
+                ->onDelete('set null');
+            $table->enum('status', ['preparing', 'on_the_way', 'delivered', 'failed'])->default('preparing');
+            $table->timestamp('status_time')->nullable();
             $table->timestamps();
         });
     }

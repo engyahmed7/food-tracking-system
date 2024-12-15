@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('set null');
+
+
+            $table->decimal('total_amount', 10, 2);
+            $table->enum('status', ['pending', 'completed', 'cancelled'])->default('pending');
+            $table->string('payment_status')->default('pending');
+            $table->string('delivery_address');
+            $table->timestamp('delivery_time')->nullable();
             $table->timestamps();
         });
     }
