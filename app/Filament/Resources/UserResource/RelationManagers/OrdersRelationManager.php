@@ -16,16 +16,24 @@ class OrdersRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        return $form->schema([
-            Forms\Components\TextInput::make('id')
-                ->disabled(),
-            Forms\Components\Select::make('payment_id')
-                ->relationship('payment', 'id')
-                ->nullable(),
-            Forms\Components\Select::make('delivery_tracking_id')
-                ->relationship('deliveryTracking', 'id')
-                ->nullable(),
-        ]);
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('total_amount')
+                    ->label('Total Amount')
+                    ->numeric()
+                    ->required(),
+                Forms\Components\TextInput::make('status')
+                    ->required(),
+                Forms\Components\TextInput::make('payment_status')
+                    ->label('Payment Status')
+                    ->required(),
+                Forms\Components\TextInput::make('delivery_address')
+                    ->label('Delivery Address')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\DateTimePicker::make('delivery_time')
+                    ->label('Delivery Time'),
+            ]);
     }
 
     public function table(Table $table): Table
@@ -33,9 +41,27 @@ class OrdersRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('order')
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable(),
-                Tables\Columns\TextColumn::make('payment.amount')->label('Payment Amount'),
-                Tables\Columns\TextColumn::make('delivery_tracking.status')->label('Delivery Status'),
+                Tables\Columns\TextColumn::make('id')
+                    ->label('Order ID')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('total_amount')
+                    ->label('Total Amount')
+                    ->sortable()
+                    ->money('USD'),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status'),
+                Tables\Columns\TextColumn::make('payment_status')
+                    ->label('Payment Status'),
+                Tables\Columns\TextColumn::make('delivery_address')
+                    ->label('Delivery Address')
+                    ->wrap(),
+                Tables\Columns\TextColumn::make('delivery_time')
+                    ->label('Delivery Time')
+                    ->dateTime(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([
                 //

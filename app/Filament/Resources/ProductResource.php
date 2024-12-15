@@ -36,9 +36,9 @@ class ProductResource extends Resource
                     ->image(),
                 Forms\Components\Toggle::make('is_active')
                     ->required(),
-                Forms\Components\TextInput::make('category_id')
-                    ->numeric()
-                    ->default(null),
+                Forms\Components\Select::make('category_id')
+                    ->relationship('category', 'name')
+                    ->required(),
             ]);
     }
 
@@ -51,12 +51,13 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('price')
                     ->money()
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('category_id')
+
+                Tables\Columns\TextColumn::make('category.name')
                     ->numeric()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -83,7 +84,8 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\OrderItemsRelationManager::class,
+            RelationManagers\ReviewsRelationManager::class,
         ];
     }
 

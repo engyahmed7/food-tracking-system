@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('delivery_tracking', function (Blueprint $table) {
+        Schema::create('delivery_trackings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->nullable()
                 ->constrained('orders')
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('delivery_tracking');
+        Schema::dropIfExists('delivery_trackings');
     }
 };

@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
-use App\Models\User; 
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -23,7 +23,7 @@ class OrderResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name') 
+                    ->relationship('user', 'name')
                     ->required(),
                 Forms\Components\TextInput::make('total_amount')
                     ->required()
@@ -45,9 +45,8 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                // Display the user's name in the table
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('User Name') // Optional: Customize the label
+                    ->label('User Name')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_amount')
@@ -89,6 +88,7 @@ class OrderResource extends Resource
         return [
             RelationManagers\OrderItemsRelationManager::class,
             RelationManagers\PaymentRelationManager::class,
+            RelationManagers\DeliveryTrackingRelationManager::class,
         ];
     }
 

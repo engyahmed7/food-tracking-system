@@ -1,32 +1,24 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\OrderResource\RelationManagers;
 
-use App\Filament\Resources\DeliveryTrackingResource\Pages;
-use App\Filament\Resources\DeliveryTrackingResource\RelationManagers;
-use App\Models\DeliveryTracking;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class DeliveryTrackingResource extends Resource
+class DeliveryTrackingRelationManager extends RelationManager
 {
-    protected static ?string $model = DeliveryTracking::class;
+    // Set the relationship name to match the method defined in the Order model
+    protected static string $relationship = 'deliveryTracking';
 
-    protected static ?string $navigationIcon = 'heroicon-o-map';
-
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('order_id')
-                    ->relationship('order', 'id')
-                    ->required(),
-
                 Forms\Components\Select::make('status')
                     ->options([
                         'preparing' => 'Preparing',
@@ -37,55 +29,44 @@ class DeliveryTrackingResource extends Resource
                     ->required(),
 
                 Forms\Components\DateTimePicker::make('status_time')
+                    ->required()
                     ->nullable()
-                    ->required(),
+                    ->label('Status Time'),
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('status')  
             ->columns([
                 Tables\Columns\TextColumn::make('order_id')
-                    ->label('Order ID')
+                    ->label('Order ID') 
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('status_time')
                     ->label('Status Time')
                     ->sortable()
                     ->dateTime('Y-m-d H:i:s'),
             ])
             ->filters([
-                //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),  
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListDeliveryTrackings::route('/'),
-            'create' => Pages\CreateDeliveryTracking::route('/create'),
-            'view' => Pages\ViewDeliveryTracking::route('/{record}'),
-            'edit' => Pages\EditDeliveryTracking::route('/{record}/edit'),
-        ];
     }
 }
