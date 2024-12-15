@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DeliveryTrackingRelationManager extends RelationManager
 {
-    // Set the relationship name to match the method defined in the Order model
     protected static string $relationship = 'deliveryTracking';
 
     public function form(Form $form): Form

@@ -10,7 +10,7 @@ use Filament\Tables\Table;
 
 class OrderItemsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'orderItems'; // Ensure the relationship is named correctly
+    protected static string $relationship = 'orderItems';
 
     public function form(Form $form): Form
     {
@@ -18,7 +18,7 @@ class OrderItemsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Select::make('product_id')
                     ->label('Product')
-                    ->relationship('product', 'name') // This will show the product name
+                    ->relationship('product', 'name')
                     ->required(),
                 Forms\Components\TextInput::make('quantity')
                     ->numeric()
@@ -32,7 +32,7 @@ class OrderItemsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('id') // Use 'id' or another unique attribute
+            ->recordTitleAttribute('id') 
             ->columns([
                 Tables\Columns\TextColumn::make('product.name')
                     ->label('Product')
@@ -44,10 +44,9 @@ class OrderItemsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('price')
                     ->label('Price')
                     ->sortable()
-                    ->money('USD'), // Optional: adjust currency format
+                    ->money('USD'), 
             ])
             ->filters([
-                // Add any filters if necessary
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

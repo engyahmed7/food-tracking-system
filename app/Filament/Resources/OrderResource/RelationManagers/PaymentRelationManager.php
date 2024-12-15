@@ -10,7 +10,7 @@ use Filament\Tables\Table;
 
 class PaymentRelationManager extends RelationManager
 {
-    protected static string $relationship = 'payment'; // Ensure the relationship name is correct
+    protected static string $relationship = 'payment';
 
     public function form(Form $form): Form
     {
@@ -29,7 +29,7 @@ class PaymentRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('id') // You can display 'id' or another unique attribute for the payment
+            ->recordTitleAttribute('id') 
             ->columns([
                 Tables\Columns\TextColumn::make('payment_status')
                     ->label('Payment Status')
@@ -37,16 +37,14 @@ class PaymentRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('payment_method')
                     ->label('Payment Method')
                     ->sortable(),
-                // Display the related Order data
-                Tables\Columns\TextColumn::make('order.id') // Assuming `order_number` is a field on the `Order` model
+                Tables\Columns\TextColumn::make('order.id') 
                     ->label('Order Number')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('order.total_amount') // Assuming `total_amount` is a field on the `Order` model
+                Tables\Columns\TextColumn::make('order.total_amount')
                     ->label('Total Amount')
                     ->sortable(),
             ])
             ->filters([
-                // Add any filters if needed
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
