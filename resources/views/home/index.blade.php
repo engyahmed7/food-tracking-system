@@ -51,7 +51,7 @@
                 <div class="owl-show-events owl-carousel">
                     @foreach($categories as $category)
                     <div class="item">
-                        <a href="event-details.html">
+                        <a href="#">
                             <img src="{{ asset('storage/'.$category->image) }}" alt="">
                         </a>
                         <div class="category-overlay">
@@ -109,7 +109,12 @@
                     <div class="down-content">
                         <div class="left-content">
                             <div class="main-white-button">
-                                <a href="ticket-details.html">Order Now</a>
+                                <form action="{{ route('cart.add') }}" method="POST">
+                                    @csrf
+                                    <button type="submit">Order Now</button>
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="quantity" value="1">
+                                </form>
                             </div>
                         </div>
                         <div class="right-content">
@@ -146,7 +151,7 @@
             <div class="col-lg-4">
                 <div class="event-item">
                     <div class="thumb">
-                        <a href="event-details.html">
+                        <a href="{{ route('product.show', $product->id) }}">
                             <img src="{{ asset('storage/'.$product->image) }}" alt="">
                         </a>
                     </div>

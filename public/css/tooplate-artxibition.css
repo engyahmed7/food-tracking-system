@@ -280,6 +280,23 @@ body {
     opacity: 0.9;
 }
 
+.main-dark-button,
+.main-dark-button a,
+.main-dark-button button {
+    display: inline-block;
+    font-size: 14px;
+    padding: 12px 18px;
+    background-color: #343a3e;
+    color: #fff;
+    text-align: center;
+    font-weight: 500;
+    text-transform: capitalize;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    text-align: right;
+}
+
 .text-button a {
     font-size: 14px;
     color: #7c838b;
@@ -298,6 +315,27 @@ body {
 
 .text-button a:hover i {
     margin-left: 8px;
+}
+
+.cart-item {
+    position: relative;
+}
+
+.remove-btn-form {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.remove-btn {
+    background-color: transparent;
+    border: none;
+    color: red;
+    cursor: pointer;
+}
+
+.remove-btn svg {
+    font-size: 50px;
 }
 
 /* 
@@ -1254,10 +1292,21 @@ About Us Page
 */
 
 .page-heading-about {
-    background-image: url(../images/about_bg.jpg);
+    background-image: url(../images/bolognese-past.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     padding: 110px 0px 410px 0px;
+}
+
+.page-heading-about::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 48%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
 }
 
 .page-heading-about h2 {
@@ -1265,12 +1314,16 @@ About Us Page
     color: #fff;
     font-weight: 800;
     margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
 }
 
 .page-heading-about span {
     font-size: 20px;
     color: #fff;
     font-weight: 300;
+    position: relative;
+    z-index: 2;
 }
 
 .about-item {
@@ -1505,11 +1558,22 @@ Rent Venue Page
 */
 
 .page-heading-rent-venue {
-    background-image: url(../images/rent_venue_bg.jpg);
+    background-image: url(../images/bolognese-past.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     padding: 110px 0px;
     text-align: center;
+}
+
+.page-heading-rent-venue::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 48%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
 }
 
 .page-heading-rent-venue h2 {
@@ -1517,6 +1581,8 @@ Rent Venue Page
     color: #fff;
     font-weight: 800;
     margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
 }
 
 .page-heading-rent-venue span {
@@ -1525,6 +1591,8 @@ Rent Venue Page
     font-weight: 300;
     padding: 0px 250px;
     display: inline-block;
+    position: relative;
+    z-index: 2;
 }
 
 .rent-venue-tabs .heading-tabs {
@@ -1687,11 +1755,23 @@ Shows Events Page
 */
 
 .page-heading-shows-events {
-    background-image: url(../images/shows_events_bg.jpg);
+    background-image: url(../images/bolognese-past.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     padding: 110px 0px;
     text-align: center;
+}
+
+.page-heading-shows-events::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height:55%;
+    
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1;
 }
 
 .page-heading-shows-events h2 {
@@ -1699,6 +1779,8 @@ Shows Events Page
     color: #fff;
     font-weight: 800;
     margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
 }
 
 .page-heading-shows-events span {
@@ -1707,6 +1789,8 @@ Shows Events Page
     font-weight: 300;
     padding: 0px 250px;
     display: inline-block;
+    position: relative;
+    z-index: 2;
 }
 
 .shows-events-tabs {
@@ -2178,7 +2262,7 @@ Ticket Details Page
 }
 
 .ticket-details-page .right-content .total .main-dark-button {
-    text-align: right;
+    text-align: right !important;
 }
 .ticket-details-page .right-content .warn p {
     margin-top: 45px;
