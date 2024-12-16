@@ -49,30 +49,16 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="owl-show-events owl-carousel">
+                    @foreach($categories as $category)
                     <div class="item">
-                        <a href="event-details.html"><img src="{{ asset('images/show-events-01.jpg') }}" alt=""></a>
+                        <a href="event-details.html">
+                            <img src="{{ asset('storage/'.$category->image) }}" alt="">
+                        </a>
+                        <div class="category-overlay">
+                            {{ $category->name }}
+                        </div>
                     </div>
-                    <div class="item">
-                        <a href="event-details.html"><img src="{{ asset('images/show-events-02.jpg') }}" alt=""></a>
-                    </div>
-                    <div class="item">
-                        <a href="event-details.html"><img src="{{ asset('images/show-events-03.jpg') }}" alt=""></a>
-                    </div>
-                    <div class="item">
-                        <a href="event-details.html"><img src="{{ asset('images/show-events-04.jpg') }}" alt=""></a>
-                    </div>
-                    <div class="item">
-                        <a href="event-details.html"><img src="{{ asset('images/show-events-01.jpg') }}" alt=""></a>
-                    </div>
-                    <div class="item">
-                        <a href="event-details.html"><img src="{{ asset('images/show-events-02.jpg') }}" alt=""></a>
-                    </div>
-                    <div class="item">
-                        <a href="event-details.html"><img src="{{ asset('images/show-events-03.jpg') }}" alt=""></a>
-                    </div>
-                    <div class="item">
-                        <a href="event-details.html"><img src="{{ asset('images/show-events-04.jpg') }}" alt=""></a>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -106,12 +92,6 @@
             </div>
         </div>
     </div>
-</div>
-
-
-<!-- *** Map ***-->
-<div class="map-image">
-    <img src="{{ asset('images/map-image.jpg') }}" alt="Maps of 3 Venues">
 </div>
 
 

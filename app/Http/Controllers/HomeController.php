@@ -23,10 +23,11 @@ class HomeController extends Controller
         $footerSettings = app(FooterSettings::class);
         $footerSettingsArray = $footerSettings->toArray();
         $categoryNames = Category::whereIn('id', $footerSettingsArray['categories'])->pluck('name', 'id');
+        $categories = Category::all();
 
         // dd($footerSettingsArray);
 
 
-        return view('home.index', compact('product', 'headerItems', 'footerSettingsArray', 'categoryNames'));
+        return view('home.index', compact('product', 'headerItems', 'footerSettingsArray', 'categoryNames', 'categories'));
     }
 }
