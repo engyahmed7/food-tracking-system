@@ -22,12 +22,22 @@ class HomeController extends Controller
 
         $footerSettings = app(FooterSettings::class);
         $footerSettingsArray = $footerSettings->toArray();
+        
         $categoryNames = Category::whereIn('id', $footerSettingsArray['categories'])->pluck('name', 'id');
         $categories = Category::all();
 
-        // dd($footerSettingsArray);
+        $featuredProducts = Product::with('category')
+            ->where('is_featured', true)
+            ->take(3)
+            ->get();
+
+        $recentFeaturedProducts = Product::with('category')
+            ->where('is_featured', true)
+            ->latest()
+            ->take(3)
+            ->get();
 
 
-        return view('home.index', compact('product', 'headerItems', 'footerSettingsArray', 'categoryNames', 'categories'));
+        return view('home.index', compact('product', 'headerItems', 'footerSettingsArray', 'categoryNames', 'categories', 'featuredProducts', 'recentFeaturedProducts'));
     }
 }

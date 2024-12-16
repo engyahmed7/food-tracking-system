@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-lg-4">
                 <div class="address">
-                    <h4>Sunny Hill Festival Address</h4>
+                    <h4>Food Tracking Project Address</h4>
                     <span>{{ $footerSettingsArray['address']}}</span>
                 </div>
             </div>

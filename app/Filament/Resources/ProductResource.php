@@ -34,9 +34,14 @@ class ProductResource extends Resource
                     ->prefix('$'),
                 Forms\Components\FileUpload::make('image')
                     ->image()
-                    // max file size to be up to 6 mb
                     ->maxSize(6 * 1024 * 1024),
                 Forms\Components\Toggle::make('is_active')
+                    ->required(),
+                Forms\Components\Toggle::make('is_featured')
+                    ->required(),
+                Forms\Components\TextInput::make('stock')
+                    ->numeric()
+                    ->minValue(0)
                     ->required(),
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'name')
@@ -55,8 +60,14 @@ class ProductResource extends Resource
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
-
                 Tables\Columns\TextColumn::make('category.name')
+                    ->numeric()
+                    ->sortable(),
+
+                Tables\Columns\IconColumn::make('is_featured')
+                    ->boolean(),
+
+                Tables\Columns\TextColumn::make('stock')
                     ->numeric()
                     ->sortable(),
 
