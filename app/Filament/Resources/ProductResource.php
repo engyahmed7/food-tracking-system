@@ -33,7 +33,9 @@ class ProductResource extends Resource
                     ->numeric()
                     ->prefix('$'),
                 Forms\Components\FileUpload::make('image')
-                    ->image(),
+                    ->image()
+                    // max file size to be up to 6 mb
+                    ->maxSize(6 * 1024 * 1024),
                 Forms\Components\Toggle::make('is_active')
                     ->required(),
                 Forms\Components\Select::make('category_id')

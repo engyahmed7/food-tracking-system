@@ -1,5 +1,6 @@
 <?php
 
+use App\Settings\HeaderSettings;
 use App\Settings\ShowBannerData;
 
 return [
@@ -10,6 +11,7 @@ return [
      */
     'settings' => [
         ShowBannerData::class,
+        HeaderSettings::class,
 
     ],
 
