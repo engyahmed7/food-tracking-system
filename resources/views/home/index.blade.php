@@ -111,7 +111,7 @@
                             <div class="main-white-button">
                                 <form action="{{ route('cart.add') }}" method="POST">
                                     @csrf
-                                    <button type="submit">Order Now</button>
+                                    <button class="" type="submit">Order Now</button>
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <input type="hidden" name="quantity" value="1">
                                 </form>
@@ -156,7 +156,7 @@
                         </a>
                     </div>
                     <div class="down-content">
-                        <a href="event-details.html">
+                        <a href="{{ route('product.show', $product->id) }}">
                             <h4>
                                 {{ $product->name }}
                             </h4>
