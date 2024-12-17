@@ -24,10 +24,6 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-content">
-                    <div class="next-show">
-                        <i class="fa fa-arrow-up"></i>
-                        <span>Next Show</span>
-                    </div>
                     <h3>{{
                         $product->name
                     }}

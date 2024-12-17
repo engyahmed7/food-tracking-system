@@ -17,13 +17,6 @@ class HomeController extends Controller
         $settings = app(ShowBannerData::class);
         $product = Product::find($settings->selected_product_id);
 
-        $headerSettings = app(HeaderSettings::class);
-        $headerItems = $headerSettings->header_items;
-
-        $footerSettings = app(FooterSettings::class);
-        $footerSettingsArray = $footerSettings->toArray();
-        
-        $categoryNames = Category::whereIn('id', $footerSettingsArray['categories'])->pluck('name', 'id');
         $categories = Category::all();
 
         $featuredProducts = Product::with('category')
@@ -38,6 +31,6 @@ class HomeController extends Controller
             ->get();
 
 
-        return view('home.index', compact('product', 'headerItems', 'footerSettingsArray', 'categoryNames', 'categories', 'featuredProducts', 'recentFeaturedProducts'));
+        return view('home.index', compact('product', 'categories', 'featuredProducts', 'recentFeaturedProducts'));
     }
 }

@@ -19,17 +19,9 @@ class CartController extends Controller
         $cart = $this->getCart();
         $cartItems = $cart->items;
 
-        $headerSettings = app(HeaderSettings::class);
-        $headerItems = $headerSettings->header_items;
-
-        $footerSettings = app(FooterSettings::class);
-        $footerSettingsArray = $footerSettings->toArray();
-
-        $categoryNames = Category::whereIn('id', $footerSettingsArray['categories'])->pluck('name', 'id');
 
 
-
-        return view('cart.index', compact('cartItems', 'headerItems', 'footerSettingsArray', 'categoryNames'));
+        return view('cart.index', compact('cartItems'));
     }
 
     public function addToCart(Request $request)

@@ -1,3 +1,15 @@
+@php
+
+use App\Settings\FooterSettings;
+use App\Models\Category;
+
+$footerSettings = app(FooterSettings::class);
+$footerSettingsArray = $footerSettings->toArray();
+
+$categoryNames = Category::whereIn('id', $footerSettingsArray['categories'])->pluck('name', 'id');
+
+@endphp
+
 <footer>
     <div class="container">
         <div class="row">
