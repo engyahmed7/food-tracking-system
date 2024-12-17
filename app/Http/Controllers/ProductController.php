@@ -13,7 +13,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = Product::paginate(2);
+        $products = Product::paginate(3);
 
         $categories = Category::all();
         return view('products.index', compact('products', 'categories'));
@@ -22,15 +22,8 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
-        $headerSettings = app(HeaderSettings::class);
-        $headerItems = $headerSettings->header_items;
-
-        $footerSettings = app(FooterSettings::class);
-        $footerSettingsArray = $footerSettings->toArray();
-
-        $categoryNames = Category::whereIn('id', $footerSettingsArray['categories'])->pluck('name', 'id');
 
 
-        return view('products.show', compact('product', 'headerItems', 'footerSettingsArray', 'categoryNames'));
+        return view('products.show', compact('product'));
     }
 }

@@ -55,6 +55,8 @@
                         <h4>
                             {{ $product->name }}
                         </h4>
+                        @if($product->stock > 0)
+
                         <span>{{ $product->stock < 3 ? 'only '. $product->stock  : $product->stock }} still available</span>
 
                         <div class="quantity-content">
@@ -84,6 +86,9 @@
                                 </button>
                             </form>
                         </div>
+                        @else
+                        <span class="out-stock">Out of stock</span>
+                        @endif
 
                     </div>
                 </div>

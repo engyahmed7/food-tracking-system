@@ -12,9 +12,11 @@ class CategoryController extends Controller
         $categories = Category::with('products')->get();
         return view('categories.index', compact('categories'));
     }
+
     public function show($id)
     {
-        $category = Category::with('products')->find($id);
-        return view('categories.show', compact('category'));
+        $category = Category::findOrFail($id);
+        $products = $category->products()->paginate(3);
+        return view('categories.show', compact('category', 'products'));
     }
 }

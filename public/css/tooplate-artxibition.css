@@ -857,13 +857,17 @@ Show Events Carousel
     transition: transform 0.3s ease-in-out;
 }
 
-.owl-show-events .item {
+.added-overlay img {
+    transition: transform 0.3s ease-in-out;
+}
+
+.item {
     position: relative;
     overflow: hidden;
     border-radius: 7px;
 }
 
-.owl-show-events .item .category-overlay {
+.item .category-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -880,11 +884,11 @@ Show Events Carousel
     font-weight: 600;
 }
 
-.owl-show-events .item:hover .category-overlay {
+.item:hover .category-overlay {
     opacity: 1;
 }
 
-.owl-show-events .item:hover img {
+.item:hover img {
     transform: scale(1.1);
 }
 
@@ -2746,4 +2750,34 @@ responsive
 .prod-img-size {
     max-height: 200px;
     object-fit: cover;
+}
+.out-stock {
+    color: #ff0000;
+    font-weight: bold;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 50px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #ffe6e6;
+    border: 3px solid #ff6666;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    overflow: visible !important;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
 }

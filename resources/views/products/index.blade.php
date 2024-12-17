@@ -23,7 +23,6 @@
                 </div>
             </div>
             @foreach ($products as $product)
-            @if($product->stock > 0)
             <div class="col-lg-4">
                 <div class="ticket-item">
                     <div class="thumb">
@@ -32,7 +31,8 @@
                     <div class="down-content">
 
                         <span>There Are {{ $product->stock }} Left For This Item</span>
-                        <h4>Wonderful Festival</h4>
+                        <h4>{{ $product->name}}</h4>
+                        @if($product->stock > 0)
                         <div class="quantity-content">
 
                             <div class="right-content d-flex justify-content-between align-content-center align-items-center">
@@ -59,10 +59,16 @@
                                 Add to Cart
                             </button>
                         </form>
+                        @else
+                        <div class="price">
+                            <span>
+                                <em>Out of Stock</em>
+                            </span>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
-            @endif
             @endforeach
 
             {{ $products->links('vendor.pagination.custom') }}
