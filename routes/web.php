@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -51,6 +52,11 @@ Route::middleware('auth')->group(function () {
 
     // checkout
     Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout.index');
+
+    // order
+
+    Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
+    Route::get('/orders/{order}', [OrderController::class, 'track'])->name('order.track');
 });
 
 require __DIR__ . '/auth.php';

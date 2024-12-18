@@ -8,15 +8,7 @@ class CashOnDeliveryPaymentProcessor implements PaymentProcessorInterface
 {
     public function createPayment(float $amount, string $currency, array $paymentDetails): array
     {
-        return [
-            'status' => 'success',
-            'message' => 'Cash on Delivery payment created successfully.',
-            'payment_details' => [
-                'amount' => $amount,
-                'currency' => $currency,
-                'details' => $paymentDetails,
-            ],
-        ];
+        return $this->generatePaymentResponse($amount, $currency, $paymentDetails);
     }
 
     public function processPayment(array $paymentData): array
@@ -30,5 +22,18 @@ class CashOnDeliveryPaymentProcessor implements PaymentProcessorInterface
     public function refundPayment(string $transactionId, float $amount): bool
     {
         return true;
+    }
+
+    private function generatePaymentResponse(float $amount, string $currency, array $paymentDetails): array
+    {
+        return [
+            'status' => 'success',
+            'message' => 'Cash on Delivery payment created successfully.',
+            'payment_details' => [
+                'amount' => $amount,
+                'currency' => $currency,
+                'details' => $paymentDetails,
+            ],
+        ];
     }
 }

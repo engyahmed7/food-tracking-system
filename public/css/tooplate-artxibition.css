@@ -1300,6 +1300,7 @@ About Us Page
     background-size: cover;
     background-repeat: no-repeat;
     padding: 110px 0px 410px 0px;
+    position: relative;
 }
 
 .page-heading-about::before {
@@ -1308,7 +1309,7 @@ About Us Page
     top: 0;
     left: 0;
     width: 100%;
-    height: 48%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1;
 }
@@ -1765,6 +1766,7 @@ Shows Events Page
     background-repeat: no-repeat;
     padding: 110px 0px;
     text-align: center;
+    position: relative;
 }
 
 .page-heading-shows-events::before {
@@ -1773,7 +1775,7 @@ Shows Events Page
     top: 0;
     left: 0;
     width: 100%;
-    height: 55%;
+    height: 100%;
 
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 1;

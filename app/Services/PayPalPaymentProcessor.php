@@ -14,26 +14,26 @@ class PayPalPaymentProcessor implements PaymentProcessorInterface
     protected $provider;
 
     public function __construct()
-{
-    Log::info('Starting PayPal Constructor');
-    
-    $this->provider = new PayPalClient();
-    Log::info('PayPalProvider Initialized', ['provider' => $this->provider]);
-    
-    $paypalConfig = config('services.paypal');
-    Log::info('PayPal Config', ['config' => $paypalConfig]);
-    
-    try {
-        Log::info('Before setting credentials');
-        $this->provider->setApiCredentials(config('services.paypal'));
-        Log::info('After setting credentials');
-    } catch (\Exception $e) {
-        Log::error('Error setting credentials', [
-            'message' => $e->getMessage(),
-            'trace' => $e->getTraceAsString()
-        ]);
+    {
+        Log::info('Starting PayPal Constructor');
+
+        $this->provider = new PayPalClient();
+        Log::info('PayPalProvider Initialized', ['provider' => $this->provider]);
+
+        $paypalConfig = config('services.paypal');
+        Log::info('PayPal Config', ['config' => $paypalConfig]);
+
+        try {
+            Log::info('Before setting credentials');
+            $this->provider->setApiCredentials(config('services.paypal'));
+            Log::info('After setting credentials');
+        } catch (\Exception $e) {
+            Log::error('Error setting credentials', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+        }
     }
-}
 
 
 

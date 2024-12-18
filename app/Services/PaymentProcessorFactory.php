@@ -11,7 +11,7 @@ class PaymentProcessorFactory implements PaymentProcessorFactoryInterface
 {
     public function getProcessor(string $provider): PaymentProcessorInterface
     {
-        Log::info('Payment Processor Factory', ['provider' => $provider]);
+        // Log::info('Payment Processor Factory', ['provider' => $provider]);
 
         return match ($provider) {
             'paypal' => new PayPalPaymentProcessor(),

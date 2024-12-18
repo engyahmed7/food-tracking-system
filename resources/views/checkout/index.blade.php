@@ -27,10 +27,6 @@
 </div>
 <div class="checkout-container py-5">
     <div class="container">
-        <div class="checkout-header text-center mb-4">
-            <h2 class="display-5 fw-bold">Checkout</h2>
-            <p class="text-muted">Complete your purchase by selecting a payment method.</p>
-        </div>
         <div class="row g-5">
             <!-- Cart Items -->
             <div class="col-lg-5">
@@ -88,6 +84,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="payment-card border rounded p-3 text-center hover-shadow">
+
                                         <input type="radio" name="payment_method" id="cod" value="cod" required>
                                         <label for="cod" class="d-block mt-2">
                                             <i class="bi bi-cash fs-3"></i>
@@ -176,11 +173,7 @@
         --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
 
-    body {
-        background-color: var(--background-color);
-        font-family: 'Inter', sans-serif;
-        color: var(--text-color);
-    }
+
 
     .checkout-container {
         background: white;
