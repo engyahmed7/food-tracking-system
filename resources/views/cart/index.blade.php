@@ -97,9 +97,7 @@
                         <h4>Total: ${{ number_format($cartItems->sum(function ($item) {
                                 return $item->product->price * $item->quantity;
                             }), 2) }}</h4>
-                        <div class="main-dark-button mt-3">
-                            <a href="{{ route('cart.checkout') }}">Proceed to Checkout</a>
-                        </div>
+                        <a href="{{ route('checkout.index')}}" class="main-dark-button" id="payment-submit">Proceed to checkout</a>
                     </div>
                     @else
                     <div class="warn">
@@ -112,6 +110,7 @@
         </div>
     </div>
 </div>
+
 
 @include('layouts.footer')
 @endsection

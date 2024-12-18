@@ -83,8 +83,9 @@ class CartController extends Controller
             return back()->with('error', 'Your cart is empty!');
         }
 
+        // dd($cartItems);
 
-        return redirect()->route('home')->with('success', 'Checkout successful!');
+        return view('checkout.index', compact('cartItems'));
     }
 
     protected function getCart()
