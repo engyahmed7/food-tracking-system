@@ -70,19 +70,19 @@ class PaymentController extends Controller
             ->whereIn('status', ['paid', 'completed'])
             ->first();
         if ($existingOrder) {
-            return response()->json(['message' => 'You have already placed an order.']);
+            return view('order.track', ['order' => $existingOrder]);
         }
 
 
         $cart = $this->getUserCart();
         if (!$cart) {
-            return response()->json(['message' => 'You have already placed an order.']);
+            return redirect()->back()->with('error', 'Your cart is empty.');
         }
 
         $zoneId = $request->input('zone_id');
         Log::info('zoneId Payment Sucess', ['zoneId' => $zoneId]);
         if (!$zoneId) {
-            return response()->json(['message' => 'Zone ID is missing.'], 400);
+            return redirect()->back()->with('error', 'Please select a shipping zone.');
         }
 
         $order = $this->createOrderFromCart($cart, $request);
@@ -142,12 +142,13 @@ class PaymentController extends Controller
         $shippingRate = Zone::findOrFail($zoneId)->rates()->first()->rate;
         $totalAmount = $cart->items->sum(fn($item) => $item->product->price * $item->quantity) + $shippingRate;
 
+        Log::info(['delivery_address' => $request->input('delivery_address', '')]);
         $order = new Order();
         $order->user_id = Auth::id();
         $order->total_amount = $totalAmount;
         $order->status = 'pending';
         $order->payment_status = 'paid';
-        $order->delivery_address = $request->input('delivery_address', '');
+        $order->delivery_address = $request->input('delivery_address');
         $order->delivery_time = $request->input('delivery_time');
         $order->shipping_fee = $shippingRate;
         $order->save();
@@ -248,6 +249,8 @@ class PaymentController extends Controller
                 'payment_method' => $paymentMethod,
                 'payment_method_id' => $paymentMethodId,
                 'zone_id' => $zoneId,
+                'delivery_address' => request()->input('delivery_address'),
+                'delivery_time' => request()->input('delivery_time')
             ]);
         }
 
@@ -263,6 +266,15 @@ class PaymentController extends Controller
      */
     private function getPaymentDetails(string $paymentMethod, string $paymentMethodId, string $zoneId): array
     {
-        return ($paymentMethod === 'stripe') ? ['payment_method_id' => $paymentMethodId] : [];
+        $details = [
+            'delivery_address' => request()->input('delivery_address'),
+            'delivery_time' => request()->input('delivery_time')
+        ];
+
+        if ($paymentMethod === 'stripe') {
+            $details['payment_method_id'] = $paymentMethodId;
+        }
+
+        return $details;
     }
 }
