@@ -17,16 +17,16 @@ return new class extends SettingsMigration
                 'url' => '/about',
             ],
             [
-                'label' => 'Rent Venue',
-                'url' => '/rent-venue',
+                'label' => 'Contact Us',
+                'url' => '/contact',
             ],
             [
-                'label' => 'Shows & Events',
-                'url' => '/shows-events',
+                'label' => 'categories',
+                'url' => '/categories',
             ],
             [
-                'label' => 'Tickets',
-                'url' => '/tickets',
+                'label' => 'Products',
+                'url' => '/products',
             ],
         ]);
     }

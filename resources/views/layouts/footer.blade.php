@@ -6,7 +6,10 @@ use App\Models\Category;
 $footerSettings = app(FooterSettings::class);
 $footerSettingsArray = $footerSettings->toArray();
 
+$categoryNames = [];
+if (isset($footerSettingsArray['categories'])) {
 $categoryNames = Category::whereIn('id', $footerSettingsArray['categories'])->pluck('name', 'id');
+}
 
 @endphp
 
@@ -35,12 +38,24 @@ $categoryNames = Category::whereIn('id', $footerSettingsArray['categories'])->pl
                 <div class="hours">
                     <h4>Open Hours</h4>
                     <ul>
-                        @foreach ($footerSettingsArray['open_hours'] as $openHour)
-                        <li>{{ $openHour['value'] }}</li>
+                        @if(isset($footerSettingsArray['open_hours']))
+                        @if(is_string($footerSettingsArray['open_hours']))
+                        @foreach (explode("\n", $footerSettingsArray['open_hours']) as $openHour)
+                        <li>{{ trim($openHour) }}</li>
                         @endforeach
+                        @elseif(is_array($footerSettingsArray['open_hours']))
+                        @foreach ($footerSettingsArray['open_hours'] as $openHour)
+                        <li>{{ $openHour }}</li>
+                        @endforeach
+                        @endif
+                        @else
+                        <li>Opening hours will be updated soon</li>
+                        @endif
                     </ul>
                 </div>
+
             </div>
+
             <div class="col-lg-12">
                 <div class="under-footer">
                     <div class="row">
@@ -66,8 +81,8 @@ $categoryNames = Category::whereIn('id', $footerSettingsArray['categories'])->pl
                         <div class="col-lg-6">
                             <div class="menu">
                                 <ul>
-                                    @foreach($footerSettingsArray['menu'] as $menuItem)
-                                    <li><a href="#">{{ $menuItem['value'] }}</a></li>
+                                    @foreach($footerSettingsArray['menu'] as $label => $url)
+                                    <li><a href="{{ $url }}">{{ $label }}</a></li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -75,16 +90,16 @@ $categoryNames = Category::whereIn('id', $footerSettingsArray['categories'])->pl
                         <div class="col-lg-3">
                             <div class="social-links">
                                 <ul>
-                                    @foreach($footerSettingsArray['social_links'] as $socialLink)
-                                    <li><a href="{{ $socialLink['value'] }}"><i class="fa fa-{{ $socialLink['key'] }}"></i></a></li>
+                                    @foreach($footerSettingsArray['social_links'] as $platform => $url)
+                                    <li><a href="{{ $url }}"><i class="fa fa-{{ $platform }}"></i></a></li>
                                     @endforeach
-
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </footer>

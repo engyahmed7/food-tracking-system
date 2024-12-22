@@ -14,8 +14,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $settings = app(ShowBannerData::class);
-        $product = Product::find($settings->selected_product_id);
+        $bannerSettings = app(ShowBannerData::class);
+        $product = Product::find($bannerSettings->selected_product_id);
 
         $categories = Category::all();
 
@@ -31,6 +31,6 @@ class HomeController extends Controller
             ->get();
 
 
-        return view('home.index', compact('product', 'categories', 'featuredProducts', 'recentFeaturedProducts'));
+        return view('home.index', compact('bannerSettings', 'product', 'categories', 'featuredProducts', 'recentFeaturedProducts'));
     }
 }

@@ -7,7 +7,7 @@ use Spatie\LaravelSettings\Settings;
 class FooterSettings extends Settings
 {
     public string $address;
-    public array $categories;
+    public array $links;
     public array $open_hours;
     public string $location;
     public string $copyright;

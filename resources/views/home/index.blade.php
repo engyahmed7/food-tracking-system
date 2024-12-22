@@ -24,13 +24,15 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-content">
-                    <h3>{{
-                        $product->name
-                    }}
+                    <h3>
+                        {{ $bannerSettings->banner_text ?? $product->name ?? 'Discover Amazing Art Exhibitions' }}
                     </h3>
-                    <h2>{{$product->description}}</h2>
+                    <h2>{{ $bannerSettings->banner_description?? $product->description ??  'Discover Amazing Art Exhibitions' }}</h2>
                     <div class="main-white-button">
-                        <a href="ticket-details.html">Order Now</a>
+                        <a href="{{ isset($product) ? route('product.show', $product->id) : '#' }}" class="btn btn-primary">
+                            <i class="fa fa-shopping-cart me-2"></i>
+                            {{ isset($product) ?  $bannerSettings->banner_btn_text : 'Order Now' }}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -47,12 +49,12 @@
                 <div class="owl-show-events owl-carousel">
                     @foreach($categories as $category)
                     <div class="item">
-                        <a href="#">
+                        <a href="{{ route('category.show', $category->id) }}">
                             <img src="{{ asset('storage/'.$category->image) }}" alt="">
                         </a>
-                        <div class="category-overlay">
+                        <a href="{{ route('category.show', $category->id) }}" class="category-overlay">
                             {{ $category->name }}
-                        </div>
+                        </a>
                     </div>
                     @endforeach
                 </div>
@@ -96,6 +98,13 @@
                 </div>
             </div>
 
+            @if(count($featuredProducts) == 0)
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2>No products available</h2>
+                </div>
+            </div>
+            @else
             @foreach ($featuredProducts as $product)
             <div class="col-lg-4">
                 <div class="venue-item">
@@ -107,7 +116,7 @@
                             <div class="main-white-button">
                                 <form action="{{ route('cart.add') }}" method="POST">
                                     @csrf
-                                    <button class="" type="submit">Order Now</button>
+                                    <button class="main-dark-button" type="submit">Order Now</button>
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <input type="hidden" name="quantity" value="1">
                                 </form>
@@ -128,6 +137,7 @@
                 </div>
             </div>
             @endforeach
+            @endif
 
         </div>
     </div>
@@ -138,39 +148,42 @@
 <div class="coming-events">
     <div class="left-button">
         <div class="main-white-button">
-            <a href="shows-events.html">Discover More</a>
+            <a class="" href="shows-events.html">Discover More</a>
         </div>
     </div>
     <div class="container">
         <div class="row">
+            @if(count($recentFeaturedProducts) == 0)
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h4>No upcoming events</h4>
+                </div>
+            </div>
+            @else
             @foreach($recentFeaturedProducts as $product)
             <div class="col-lg-4">
-                <div class="event-item">
+                <div class="event-item h-100"> <!-- Added h-100 class -->
                     <div class="thumb">
                         <a href="{{ route('product.show', $product->id) }}">
-                            <img src="{{ asset('storage/'.$product->image) }}" alt="">
+                            <img src="{{ asset('storage/'.$product->image) }}" alt="" class="img-fluid" style="height: 250px; object-fit: cover; width: 100%;">
                         </a>
                     </div>
                     <div class="down-content">
                         <a href="{{ route('product.show', $product->id) }}">
-                            <h4>
-                                {{ $product->name }}
-                            </h4>
+                            <h4 class="text-truncate">{{ $product->name }}</h4>
                         </a>
                         <ul>
-                            <li><i class="fa fa-clock-o"></i>
-                                {{ $product->created_at->format('d M, Y') }}
-                            </li>
-                            <li><i class="fa fa-map-marker"></i>
-                                {{ $product->category->name }}
-                            </li>
+                            <li><i class="fa fa-clock-o"></i> {{ $product->created_at->format('d M, Y') }}</li>
+                            <li><i class="fa fa-map-marker"></i> {{ $product->category->name }}</li>
                         </ul>
                     </div>
                 </div>
             </div>
             @endforeach
+            @endif
         </div>
     </div>
+
 </div>
 
 

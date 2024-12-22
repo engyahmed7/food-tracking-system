@@ -44,16 +44,23 @@ class ManageFooter extends SettingsPage
                     ->columns(2)
                     ->collapsible(),
 
-                Section::make('Categories')
+                Section::make('Links')
                     ->schema([
-                        Repeater::make('categories')
-                            ->label('Categories')
+                        Repeater::make('links')
+                            ->label('Useful Links')
                             ->schema([
-                                Select::make('category_id')
-                                    ->label('Category')
-                                    ->options(Category::all()->pluck('name', 'id'))
+                                TextInput::make('label')
+                                    ->label('Label')
+                                    ->placeholder('Enter label for the header item')
                                     ->required()
-
+                                    ->reactive()
+                                    ->helperText('This will be displayed in the navigation menu.'),
+                                TextInput::make('url')
+                                    ->label('URL')
+                                    ->placeholder('Enter the URL for the header item')
+                                    ->required()
+                                    ->reactive()
+                                    ->helperText('Ensure the URL is valid and starts with http:// or https://'),
                             ])
                             ->columns(2)
                             ->createItemButtonLabel('Add New Category'),
@@ -63,16 +70,12 @@ class ManageFooter extends SettingsPage
 
                 Section::make('Open Hours')
                     ->schema([
-                        Repeater::make('open_hours')
-                            ->label('Hours')
-                            ->schema([
-                                TextInput::make('value')
-                                    ->label('Working Hours')
-                                    ->required()
-                                    ->placeholder('e.g., Mon-Fri: 10:00 AM to 8:00 PM'),
-                            ])
-                            ->columns(1)
-                            ->createItemButtonLabel('Add New Hours'),
+                        Forms\Components\Textarea::make('open_hours')
+                            ->label('Working Hours')
+                            ->required()
+                            ->placeholder("Mon to Fri: 10:00 AM to 8:00 PM\nSat - Sun: 11:00 AM to 4:00 PM\nHolidays: Closed")
+                            ->helperText('Enter each time slot on a new line')
+                            ->rows(5)
                     ])
                     ->collapsible()
                     ->collapsed(),
@@ -82,12 +85,16 @@ class ManageFooter extends SettingsPage
                         Repeater::make('menu')
                             ->label('Menu Items')
                             ->schema([
-                                TextInput::make('value')
+                                TextInput::make('key')
                                     ->label('Menu Item')
                                     ->required()
-                                    ->placeholder('e.g., Home, About Us'),
+                                    ->placeholder('e.g., Home, Products'),
+                                TextInput::make('value')
+                                    ->label('URL')
+                                    ->required()
+                                    ->placeholder('Ensure the URL is valid and starts with http:// or https://'),
                             ])
-                            ->columns(1)
+                            ->columns(2)
                             ->createItemButtonLabel('Add New Menu Item'),
                     ])
                     ->collapsible()

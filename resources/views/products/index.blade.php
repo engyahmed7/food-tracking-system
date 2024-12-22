@@ -22,6 +22,13 @@
                     <h2> Product Page</h2>
                 </div>
             </div>
+            @if($products->isEmpty())
+            <div class="col-lg-12">
+                <div class="alert alert-info">
+                    No products available.
+                </div>
+            </div>
+            @else
             @foreach ($products as $product)
             <div class="col-lg-4">
                 <div class="ticket-item">
@@ -70,6 +77,7 @@
                 </div>
             </div>
             @endforeach
+            @endif
 
             {{ $products->links('vendor.pagination.custom') }}
 
