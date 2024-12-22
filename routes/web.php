@@ -7,6 +7,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +58,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
     Route::get('/orders/{order}', [OrderController::class, 'track'])->name('order.track');
+
+    Route::post('/shipping/calculate', [ShippingController::class, 'calculateShipping'])->name('shipping.calculate');
+
+
 });
 
 require __DIR__ . '/auth.php';

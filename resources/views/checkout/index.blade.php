@@ -58,7 +58,7 @@
                 <div class="checkout-box bg-white shadow-sm rounded p-4">
                     <form id="payment-form" action="{{ route('payment.create') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="total" value="{{ number_format($cartItems->sum(fn($item) => $item->product->price * $item->quantity), 2) }}">
+                        <input type="hidden" id="total" name="total" value="{{ number_format($cartItems->sum(fn($item) => $item->product->price * $item->quantity), 2) }}">
                         <input type="hidden" name="payment_method_id" id="payment_method_id">
 
                         <div class="payment-methods mb-4">
@@ -93,6 +93,22 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="zone_id">Select Shipping Zone:</label>
+                            <select name="zone_id" id="zone_id" class="form-control">
+                                @foreach($zones as $zone)
+                                <option value="{{ $zone->id }}">{{ $zone->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="delivery_address" class="fw-bold">Delivery Address</label>
+                            <textarea name="delivery_address" id="delivery_address" class="form-control" rows="3" placeholder="Enter your delivery address" required></textarea>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="delivery_time" class="fw-bold">Preferred Delivery Time</label>
+                            <input type="datetime-local" name="delivery_time" id="delivery_time" class="form-control" required>
                         </div>
 
                         <div id="stripe-payment-method" class="mt-3" style="display: none;">
@@ -145,11 +161,43 @@
                                     }
                                 });
                             });
+
+                            document.getElementById('zone_id').addEventListener('change', function() {
+                                console.log('zone id: ', this.value);
+
+                                const zoneId = this.value;
+                                const cartTotal = document.getElementById('total').value;
+                                console.log('cart total: ', cartTotal);
+
+                                fetch('{{ route('shipping.calculate') }}', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            },
+                                            body: JSON.stringify({
+                                                zone_id: zoneId,
+                                                total: cartTotal
+                                            }),
+                                        })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log('data: ', data);
+
+                                        document.getElementById('shipping_fee').value = data.shipping_rate;
+                                        document.getElementById('total_price').innerHTML = data.total_with_shipping + '$';
+                                    });
+                            });
                         </script>
+
 
                         <div class="checkout-total mt-4">
                             <h4 class="fw-bold">Total Amount</h4>
-                            <p class="fs-5">${{ number_format($cartItems->sum(fn($item) => $item->product->price * $item->quantity), 2) }}</p>
+                            <div class="form-group d-flex justify-content-between">
+                                <label for="shipping_fee">Shipping Fee:</label>
+                                <input type="text" id="shipping_fee" class="form-control w-25" readonly>
+                            </div>
+                            <p type="text" id="total_price"></p>
                         </div>
 
                         <button type="submit" id="payment-submit" class="btn w-100 mt-3 py-2">

@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Zone;
 use App\Settings\FooterSettings;
 use App\Settings\HeaderSettings;
 use Illuminate\Http\Request;
@@ -78,6 +79,7 @@ class CartController extends Controller
     {
         $cart = $this->getCart();
         $cartItems = $cart->items;
+        $zones = Zone::all();
 
         if ($cartItems->isEmpty()) {
             return back()->with('error', 'Your cart is empty!');
@@ -85,7 +87,7 @@ class CartController extends Controller
 
         // dd($cartItems);
 
-        return view('checkout.index', compact('cartItems'));
+        return view('checkout.index', compact('cartItems', 'zones'));
     }
 
     protected function getCart()

@@ -162,7 +162,7 @@
             @else
             @foreach($recentFeaturedProducts as $product)
             <div class="col-lg-4">
-                <div class="event-item h-100"> <!-- Added h-100 class -->
+                <div class="event-item h-100"> 
                     <div class="thumb">
                         <a href="{{ route('product.show', $product->id) }}">
                             <img src="{{ asset('storage/'.$product->image) }}" alt="" class="img-fluid" style="height: 250px; object-fit: cover; width: 100%;">
