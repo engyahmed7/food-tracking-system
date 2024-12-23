@@ -9,7 +9,12 @@ class Zone extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'countries', 'cities'];
+
+    protected $casts = [
+        'countries' => 'array',
+        'cities' => 'array'
+    ];
 
     public function rates()
     {

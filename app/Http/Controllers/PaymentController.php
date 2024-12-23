@@ -29,15 +29,28 @@ class PaymentController extends Controller
      */
     public function createPayment(Request $request)
     {
+        $currency = 'USD';
         $paymentMethod = $request->input('payment_method');
-        $zoneId = $request->input('zone_id');
-        Log::info('zoneId', ['zoneId' => $zoneId]);
-        if (!$zoneId) {
-            return redirect()->back()->with('error', 'Please select a shipping zone.');
+        $shippingFee = (float) $request->input('shipping_fee');
+        $total = (float) $request->input('total');
+
+        $request->validate([
+            'shipping_fee' => 'required|numeric|min:0',
+            'total' => 'required|numeric|min:0'
+        ]);
+
+        $cart = Cart::where('user_id', Auth::id())->first();
+        if (!$cart) {
+            return redirect()->back()->with('error', 'Cart not found');
         }
 
-        $currency = 'USD';
-        $amount = $request->input('total');
+        $cartTotal = (float) $cart->items->sum(fn($item) => $item->product->price * $item->quantity);
+        $expectedTotal = $cartTotal + $shippingFee;
+
+        if (abs($expectedTotal - $total) > 0.01) {
+        
+            return redirect()->back()->with('error', 'Invalid total amount');
+        }
 
         if ($paymentMethod === 'cod' || $paymentMethod === 'paypal') {
             $paymentMethodId = '';
@@ -47,13 +60,14 @@ class PaymentController extends Controller
 
         try {
             $paymentProcessor = $this->paymentProcessorFactory->getProcessor($paymentMethod);
-            $details = $this->getPaymentDetails($paymentMethod, $paymentMethodId, $zoneId);
+            $details = $this->getPaymentDetails($paymentMethod, $paymentMethodId);
 
-            $response = $paymentProcessor->createPayment($amount, $currency, $details);
+            $response = $paymentProcessor->createPayment($total, $currency, $details);
             Log::info('Payment response', ['response' => $response]);
 
-            return $this->handlePaymentResponse($response, $paymentMethod, $paymentMethodId, $zoneId);
+            return $this->handlePaymentResponse($response, $paymentMethod, $paymentMethodId);
         } catch (\Exception $e) {
+            Log::error('Payment error', ['error' => $e->getMessage()]);
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
@@ -79,11 +93,6 @@ class PaymentController extends Controller
             return redirect()->back()->with('error', 'Your cart is empty.');
         }
 
-        $zoneId = $request->input('zone_id');
-        Log::info('zoneId Payment Sucess', ['zoneId' => $zoneId]);
-        if (!$zoneId) {
-            return redirect()->back()->with('error', 'Please select a shipping zone.');
-        }
 
         $order = $this->createOrderFromCart($cart, $request);
         $payment = $this->createPaymentRecord($order, $request);
@@ -138,9 +147,9 @@ class PaymentController extends Controller
      */
     private function createOrderFromCart(Cart $cart, Request $request): Order
     {
-        $zoneId = $request->input('zone_id');
-        $shippingRate = Zone::findOrFail($zoneId)->rates()->first()->rate;
-        $totalAmount = $cart->items->sum(fn($item) => $item->product->price * $item->quantity) + $shippingRate;
+        $shippingFee = (float) $request->input('shipping_fee', 0);
+        log::info(['shipping_fee' => $shippingFee]);
+        $totalAmount = $cart->items->sum(fn($item) => $item->product->price * $item->quantity) + $shippingFee;
 
         Log::info(['delivery_address' => $request->input('delivery_address', '')]);
         $order = new Order();
@@ -150,7 +159,7 @@ class PaymentController extends Controller
         $order->payment_status = 'paid';
         $order->delivery_address = $request->input('delivery_address');
         $order->delivery_time = $request->input('delivery_time');
-        $order->shipping_fee = $shippingRate;
+        $order->shipping_fee = $shippingFee;
         $order->save();
 
         $this->addItemsToOrder($order, $cart);
@@ -239,7 +248,7 @@ class PaymentController extends Controller
      * @param string $paymentMethodId
      * @return \Illuminate\Http\RedirectResponse
      */
-    private function handlePaymentResponse(array $response, string $paymentMethod, string $paymentMethodId, string $zoneId)
+    private function handlePaymentResponse(array $response, string $paymentMethod, string $paymentMethodId)
     {
         if ($response['status'] === 'success') {
             if ($paymentMethod === 'paypal') {
@@ -248,7 +257,6 @@ class PaymentController extends Controller
             return redirect()->route('payment.success', [
                 'payment_method' => $paymentMethod,
                 'payment_method_id' => $paymentMethodId,
-                'zone_id' => $zoneId,
                 'delivery_address' => request()->input('delivery_address'),
                 'delivery_time' => request()->input('delivery_time')
             ]);
@@ -264,7 +272,7 @@ class PaymentController extends Controller
      * @param string $paymentMethodId
      * @return array
      */
-    private function getPaymentDetails(string $paymentMethod, string $paymentMethodId, string $zoneId): array
+    private function getPaymentDetails(string $paymentMethod, string $paymentMethodId): array
     {
         $details = [
             'delivery_address' => request()->input('delivery_address'),

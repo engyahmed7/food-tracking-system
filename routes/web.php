@@ -61,7 +61,11 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/shipping/calculate', [ShippingController::class, 'calculateShipping'])->name('shipping.calculate');
 
+    Route::post('/address/check', [ShippingController::class, 'checkAddress'])->name('address.check');
 
+    Route::get('/shipping/countries', [ShippingController::class, 'getCountries'])->name('shipping.countries');
+    Route::get('/shipping/cities', [ShippingController::class, 'getCities'])->name('shipping.cities');
+    Route::post('/shipping/calculate', [ShippingController::class, 'calculateShipping'])->name('shipping.calculate');
 });
 
 require __DIR__ . '/auth.php';

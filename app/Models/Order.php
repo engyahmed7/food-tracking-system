@@ -13,6 +13,7 @@ class Order extends Model
         'payment_status',
         'delivery_address',
         'delivery_time',
+        'shipping_fee',
 
     ];
 

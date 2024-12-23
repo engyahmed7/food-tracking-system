@@ -3,42 +3,83 @@
 namespace App\Http\Controllers;
 
 use App\Models\Zone;
-use App\Models\Order;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Nnjeim\World\Models\City;
 
 class ShippingController extends Controller
 {
-    public function calculateShipping(Request $request)
+    public function getCountries()
     {
-        $zoneId = $request->input('zone_id');
-        $zone = Zone::findOrFail($zoneId);
+        try {
+            $countries = collect(countries())->map(function ($country) {
+                return [
+                    'code' => $country->getIsoAlpha2(),
+                    'name' => $country->getName()
+                ];
+            })->values()->toArray();
 
-        $cartTotal = $request->input('total');
-        $shippingRate = $zone->rates()->first()->rate;
-
-        $totalWithShipping = $cartTotal + $shippingRate;
-
-        return response()->json([
-            'cart_total' => $cartTotal,
-            'shipping_rate' => $shippingRate,
-            'total_with_shipping' => $totalWithShipping,
-        ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'countries',
+                'data' => $countries,
+                'response_time' => now()->diffInMilliseconds(LARAVEL_START) . ' ms'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to load countries',
+                'data' => [],
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function confirmOrder(Request $request)
+    public function getCities(Request $request)
     {
-        $zoneId = $request->input('zone_id');
-        $shippingRate = Zone::findOrFail($zoneId)->rates()->first()->rate;
+        $countryCode = $request->input('country');
+        $country = country($countryCode);
 
-        $order = Order::create([
-            'user_id' => Auth::id(),
-            'cart_total' => $request->input('cart_total'),
-            'shipping_fee' => $shippingRate,
-            'total' => $request->input('total') + $shippingRate,
-            'status' => 'pending',
+        if (!$country) {
+            return response()->json([]);
+        }
+
+        $cities = collect($country->getCities() ?? [])->sort()->values();
+        return response()->json($cities);
+    }
+
+
+
+    public function calculateShipping(Request $request)
+    {
+        $address = $request->validate([
+            'country' => 'required|string',
+            'city' => 'required|string',
+            'total' => 'required|numeric'
         ]);
 
-        return redirect()->route('order.track', ['order' => $order->id]);
+        $country = country($address['country']);
+        $countryName = $country->getName();
+
+        $zone = Zone::where(function ($query) use ($countryName, $address) {
+            $query->whereJsonContains('countries', $countryName)
+                ->orWhereJsonContains('cities', $address['city']);
+        })->first();
+
+        if (!$zone) {
+            return response()->json([
+                'error' => 'Shipping not available for this location'
+            ], 404);
+        }
+
+        $shippingRate = $zone->rates()->first()->rate ?? 0;
+        $totalWithShipping = $address['total'] + $shippingRate;
+
+        return response()->json([
+            'cart_total' => $address['total'],
+            'shipping_rate' => $shippingRate,
+            'total_with_shipping' => $totalWithShipping,
+            'zone' => $zone->name
+        ]);
     }
 }

@@ -13,7 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(PaymentProcessorFactoryInterface::class, PaymentProcessorFactory::class);    }
+        $this->app->singleton(PaymentProcessorFactoryInterface::class, PaymentProcessorFactory::class);
+    }
 
     /**
      * Bootstrap any application services.
