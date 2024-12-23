@@ -210,7 +210,7 @@ class ShippingCalculator extends Component
                 $this->totalWithShipping = $this->cartTotal + $this->shippingFee;
 
                 $this->dispatch('shipping-calculated', [
-                    'shippingFee' => $this->shippingFee,
+                    'fee' => $this->shippingFee,
                     'total' => $this->totalWithShipping
                 ]);
 

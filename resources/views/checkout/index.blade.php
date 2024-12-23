@@ -59,7 +59,6 @@
                         @csrf
                         <input type="hidden" name="shipping_fee" id="form_shipping_fee" wire:model="shippingFee">
                         <input type="hidden" name="total_amount" id="form_total" wire:model="totalWithShipping">
-
                         <input type="hidden" name="payment_method_id" id="payment_method_id">
 
                         <div class="payment-methods mb-4">
@@ -112,22 +111,37 @@
                             const paymentMethodInput = document.getElementById('payment_method_id');
                             const stripePaymentMethod = document.getElementById('stripe-payment-method');
 
-                            document.addEventListener('shipping-calculated', data => {
-                                alert(`shipping fee ${data.shippingFee} was created!`);
+                            document.addEventListener('livewire:initialized', () => {
+                                const shippingFeeInput = document.getElementById('form_shipping_fee');
+                                const totalInput = document.getElementById('form_total');
+                                window.Livewire.on('shipping-calculated', (eventData) => {
+                                    console.log('Shipping data received:', eventData[0].fee);
+                                    if (shippingFeeInput && totalInput) {
+                                        shippingFeeInput.value = eventData[0].fee;
+                                        console.log('Updated shipping fee:', shippingFeeInput.value);
+                                        totalInput.value = eventData[0].total;
+                                        console.log('Updated total:', totalInput.value);
+
+                                        console.log('Updated values:', {
+                                            shippingFee: shippingFeeInput,
+                                            total: totalInput
+                                        });
+                                    }
+                                });
                             });
                             paymentForm.addEventListener('submit', async (event) => {
                                 event.preventDefault();
-
-
                                 const shippingFee = document.getElementById('form_shipping_fee').value;
                                 const total = document.getElementById('form_total').value;
 
+                                console.log('Submitting with values:', {
+                                    shippingFee: shippingFee,
+                                    total: total
+                                });
                                 if (!shippingFee || parseFloat(shippingFee) <= 0) {
                                     alert('Please calculate shipping before proceeding.');
                                     return;
                                 }
-
-
                                 document.getElementById('form_shipping_fee').value = shippingFee;
                                 document.getElementById('form_total').value = total;
 

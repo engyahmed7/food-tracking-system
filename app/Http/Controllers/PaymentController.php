@@ -32,23 +32,22 @@ class PaymentController extends Controller
         $currency = 'USD';
         $paymentMethod = $request->input('payment_method');
         $shippingFee = (float) $request->input('shipping_fee');
-        $total = (float) $request->input('total');
+        $total = (float) $request->input('total_amount');
 
-        $request->validate([
-            'shipping_fee' => 'required|numeric|min:0',
-            'total' => 'required|numeric|min:0'
-        ]);
+        // dd($shippingFee);
 
         $cart = Cart::where('user_id', Auth::id())->first();
+        Log::info(['cart' => $cart]);
         if (!$cart) {
             return redirect()->back()->with('error', 'Cart not found');
         }
 
         $cartTotal = (float) $cart->items->sum(fn($item) => $item->product->price * $item->quantity);
         $expectedTotal = $cartTotal + $shippingFee;
+        // dd($expectedTotal);
 
         if (abs($expectedTotal - $total) > 0.01) {
-        
+
             return redirect()->back()->with('error', 'Invalid total amount');
         }
 
@@ -147,7 +146,8 @@ class PaymentController extends Controller
      */
     private function createOrderFromCart(Cart $cart, Request $request): Order
     {
-        $shippingFee = (float) $request->input('shipping_fee', 0);
+        // dd($request->all());
+        $shippingFee = (float) $request->input('shipping_fee');
         log::info(['shipping_fee' => $shippingFee]);
         $totalAmount = $cart->items->sum(fn($item) => $item->product->price * $item->quantity) + $shippingFee;
 
@@ -258,7 +258,8 @@ class PaymentController extends Controller
                 'payment_method' => $paymentMethod,
                 'payment_method_id' => $paymentMethodId,
                 'delivery_address' => request()->input('delivery_address'),
-                'delivery_time' => request()->input('delivery_time')
+                'delivery_time' => request()->input('delivery_time'),
+                'shipping_fee' => request()->input('shipping_fee'),
             ]);
         }
 
@@ -276,7 +277,7 @@ class PaymentController extends Controller
     {
         $details = [
             'delivery_address' => request()->input('delivery_address'),
-            'delivery_time' => request()->input('delivery_time')
+            'delivery_time' => request()->input('delivery_time'),
         ];
 
         if ($paymentMethod === 'stripe') {

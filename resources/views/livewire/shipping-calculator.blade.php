@@ -40,8 +40,6 @@
         <div class="d-flex justify-content-between mt-2">
             <strong>Total with shipping:</strong>
             <strong>${{ number_format($totalWithShipping, 2) }}</strong>
-            <input type="hidden" name="total_amount" id="form_total" value="{{ number_format($totalWithShipping, 2) }}">
-            <input type="hidden" name="shipping_fee" id="form_shipping_fee" value="{{ $shippingFee }}">
         </div>
     </div>
 </div>
