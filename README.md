@@ -1,67 +1,132 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Food Tracking System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
 
-## About Laravel
+The Food Tracking System is a comprehensive solution designed for managing e-commerce logistics, specifically focused on shipping and payment integrations. This project includes an admin control panel built with Filament, real-time shipping data updates using Livewire, and a factory design pattern implementation for multiple payment gateways (Stripe, PayPal, and Cash on Delivery).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Admin Control Panel
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   Built with Filament for efficient management.
+-   Features include:
+    -   Adding and managing shipping zones.
+    -   Adding countries and their available cities.
+    -   Creating new Filament users with specific roles.
+    -   Managing banners, featured products, and controlling the active/inactive status of products.
+    -   Modifying banner text for the front-end display.
 
-## Learning Laravel
+### Real-Time Shipping Calculator
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   Uses Livewire for dynamic and real-time shipping fee calculation.
+-   Features:
+    -   Calculates shipping fees based on selected country and city.
+    -   Provides immediate feedback if shipping is unavailable for a location.
+    -   Updates total cost with shipping fees in real time.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Payment Gateway Integration
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   Implements the factory design pattern to support multiple payment methods:
+    -   Stripe
+    -   PayPal
+    -   Cash on Delivery
 
-## Laravel Sponsors
+### Additional Features
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+-   RESTful APIs for retrieving countries and cities.
+-   Efficient zone and rate management for shipping.
 
-### Premium Partners
+## Technologies Used
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+-   **Backend**: Laravel Framework
+-   **Frontend**: Livewire for real-time interactions
+-   **Admin Panel**: Filament
+-   **Payment Integration**: Stripe and PayPal
+-   **Database**: MySQL
+-   **Localization**: Support for global shipping zones and multi-country support
 
-## Contributing
+## Installation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Prerequisites
 
-## Code of Conduct
+-   PHP 8.1 or higher
+-   Composer
+-   MySQL
+-   Node.js and npm (for frontend dependencies)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Steps
 
-## Security Vulnerabilities
+1. Clone the repository:
+    ```bash
+    git clone https://gitlab.objects.ws/laravel/engy-food-delivery-training.git
+    cd engy-food-delivery-training
+    ```
+2. Install PHP dependencies:
+    ```bash
+    composer install
+    ```
+3. Install Node.js dependencies:
+    ```bash
+    npm install && npm run dev
+    ```
+4. Set up the environment variables:
+    ```bash
+    cp .env.example .env
+    ```
+    Configure the `.env` file with your database credentials and payment gateway API keys.
+5. Run database migrations and seeders:
+    ```bash
+    php artisan migrate --seed
+    ```
+6. Serve the application:
+    ```bash
+    php artisan serve
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Usage
 
-## License
+### Admin Panel
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# food-tracking
+Access the admin panel at `/admin`.
+
+### Shipping Calculator
+
+The shipping calculator dynamically updates shipping costs based on the user's selected location and provides real-time feedback.
+
+### Admin User Management
+
+To create a new Filament user, run the following command in the terminal:
+
+```bash
+php artisan make:filament-user
+```
+This command will prompt you to enter:
+
+1. **Email address**: The email address of the user.
+2. **Password**: The password for the user.
+
+After running the command, the user will be created and can access the admin panel with the provided credentials.
+
+### Payment Management
+
+The system includes a dedicated payment management interface in the admin dashboard that allows administrators to:
+
+-   Enable/disable payment methods dynamically
+-   Control available payment options including:
+    -   Stripe Payments
+    -   PayPal Integration
+    -   Cash on Delivery (COD)
+
+Administrators can access these settings through:
+
+1. Navigate to the admin dashboard
+2. Go to Settings > Manage Payment
+3. Toggle payment methods on/off as needed
+4. Save changes to immediately affect the checkout options available to customers
+
+This provides flexible control over payment methods without requiring code changes.
+
+### Payment Integration
+
+During checkout, users can select a preferred payment method. The factory design pattern ensures a seamless switch between payment gateways.
+
