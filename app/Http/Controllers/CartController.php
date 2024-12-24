@@ -54,14 +54,17 @@ class CartController extends Controller
     public function updateCart(Request $request)
     {
         $cart = $this->getCart();
-        $cartItem = $cart->items()->where('product_id', $request->product_id)->first();
-
-        if ($cartItem) {
-            $cartItem->quantity = $request->quantity;
-            $cartItem->save();
+        $items = $request->input('items'); 
+    
+        foreach ($items as $item) {
+            $cartItem = $cart->items()->where('product_id', $item['product_id'])->first();
+    
+            if ($cartItem) {
+                $cartItem->quantity = $item['quantity'];
+                $cartItem->save();
+            }
         }
-
-        return redirect()->route('cart.view')->with('success', 'Cart updated!');
+        return redirect()->route('cart.view')->with('success', 'Cart updated successfully!');
     }
 
     public function removeFromCart(Request $request)
