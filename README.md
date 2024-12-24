@@ -89,10 +89,6 @@ The Food Tracking System is a comprehensive solution designed for managing e-com
 
 Access the admin panel at `/admin`.
 
-### Shipping Calculator
-
-The shipping calculator dynamically updates shipping costs based on the user's selected location and provides real-time feedback.
-
 ### Admin User Management
 
 To create a new Filament user, run the following command in the terminal:
@@ -100,12 +96,17 @@ To create a new Filament user, run the following command in the terminal:
 ```bash
 php artisan make:filament-user
 ```
+
 This command will prompt you to enter:
 
 1. **Email address**: The email address of the user.
 2. **Password**: The password for the user.
 
 After running the command, the user will be created and can access the admin panel with the provided credentials.
+
+### Shipping Calculator
+
+The shipping calculator dynamically updates shipping costs based on the user's selected location and provides real-time feedback.
 
 ### Payment Management
 
@@ -129,4 +130,3 @@ This provides flexible control over payment methods without requiring code chang
 ### Payment Integration
 
 During checkout, users can select a preferred payment method. The factory design pattern ensures a seamless switch between payment gateways.
-
