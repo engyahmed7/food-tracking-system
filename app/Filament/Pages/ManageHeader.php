@@ -15,7 +15,7 @@ use Filament\Forms\Components\Toggle;
 
 class ManageHeader extends SettingsPage
 {
-    protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
+    protected static ?string $navigationIcon = 'heroicon-o-bars-3';
     protected static ?string $navigationLabel = 'Header Settings';
     protected static ?string $navigationGroup = 'Settings';
     protected static ?string $title = 'Manage Header';

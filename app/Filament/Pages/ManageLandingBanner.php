@@ -12,7 +12,7 @@ use Filament\Pages\SettingsPage;
 
 class ManageLandingBanner extends SettingsPage
 {
-    protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
+    protected static ?string $navigationIcon = 'heroicon-o-photo';
 
     protected static ?string $navigationGroup = 'Settings';
 
