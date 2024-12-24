@@ -64,6 +64,7 @@
                         <div class="payment-methods mb-4">
                             <h4 class="fw-bold mb-3">Select Payment Method</h4>
                             <div class="row">
+                                @if($enabledPaymentMethods->stripe_enabled)
                                 <div class="col-md-4">
                                     <div class="payment-card border rounded p-3 text-center hover-shadow">
                                         <input type="radio" name="payment_method" id="stripe" value="stripe" required>
@@ -73,6 +74,8 @@
                                         </label>
                                     </div>
                                 </div>
+                                @endif
+                                @if($enabledPaymentMethods->paypal_enabled)
                                 <div class="col-md-4">
                                     <div class="payment-card border rounded p-3 text-center hover-shadow">
                                         <input type="radio" name="payment_method" id="paypal" value="paypal" required>
@@ -82,6 +85,8 @@
                                         </label>
                                     </div>
                                 </div>
+                                @endif
+                                @if($enabledPaymentMethods->cod_enabled)
                                 <div class="col-md-4">
                                     <div class="payment-card border rounded p-3 text-center hover-shadow">
 
@@ -92,14 +97,14 @@
                                         </label>
                                     </div>
                                 </div>
+                                @endif
                             </div>
                         </div>
-
+                        @if($enabledPaymentMethods->stripe_enabled)
                         <div id="stripe-payment-method" class="mt-3" style="display: none;">
                             <div id="card-element" class="form-control"></div>
                             <div id="card-errors" role="alert" class="text-danger mt-2"></div>
                         </div>
-
                         <script src="https://js.stripe.com/v3/"></script>
                         <script>
                             const stripe = Stripe('{{ env('STRIPE_PUBLIC_KEY') }}');
@@ -111,27 +116,9 @@
                             const paymentMethodInput = document.getElementById('payment_method_id');
                             const stripePaymentMethod = document.getElementById('stripe-payment-method');
 
-                            document.addEventListener('livewire:initialized', () => {
-                                const shippingFeeInput = document.getElementById('form_shipping_fee');
-                                const totalInput = document.getElementById('form_total');
-                                window.Livewire.on('shipping-calculated', (eventData) => {
-                                    console.log('Shipping data received:', eventData[0].fee);
-                                    if (shippingFeeInput && totalInput) {
-                                        shippingFeeInput.value = eventData[0].fee;
-                                        console.log('Updated shipping fee:', shippingFeeInput.value);
-                                        totalInput.value = eventData[0].total;
-                                        console.log('Updated total:', totalInput.value);
-
-                                        console.log('Updated values:', {
-                                            shippingFee: shippingFeeInput,
-                                            total: totalInput
-                                        });
-                                    }
-                                });
-                            });
                             paymentForm.addEventListener('submit', async (event) => {
                                 event.preventDefault();
-                                const shippingFee = document.getElementById('form_shipping_fee').value;
+                                const shippingFee = document.getElementById('form_shipping_fee').value ?? 1;
                                 const total = document.getElementById('form_total').value;
 
                                 console.log('Submitting with values:', {
@@ -175,6 +162,28 @@
                                         stripePaymentMethod.style.display = 'block';
                                     } else {
                                         stripePaymentMethod.style.display = 'none';
+                                    }
+                                });
+                            });
+                        </script>
+                        @endif
+
+                        <script>
+                            document.addEventListener('livewire:initialized', () => {
+                                const shippingFeeInput = document.getElementById('form_shipping_fee');
+                                const totalInput = document.getElementById('form_total');
+                                window.Livewire.on('shipping-calculated', (eventData) => {
+                                    console.log('Shipping data received:', eventData[0].fee);
+                                    if (shippingFeeInput && totalInput) {
+                                        shippingFeeInput.value = eventData[0].fee;
+                                        console.log('Updated shipping fee:', shippingFeeInput.value);
+                                        totalInput.value = eventData[0].total;
+                                        console.log('Updated total:', totalInput.value);
+
+                                        console.log('Updated values:', {
+                                            shippingFee: shippingFeeInput,
+                                            total: totalInput
+                                        });
                                     }
                                 });
                             });

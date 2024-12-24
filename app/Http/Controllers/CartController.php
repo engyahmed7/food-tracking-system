@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Zone;
 use App\Settings\FooterSettings;
 use App\Settings\HeaderSettings;
+use App\Settings\PaymentSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -80,6 +81,7 @@ class CartController extends Controller
         $cart = $this->getCart();
         $cartItems = $cart->items;
         $zones = Zone::all();
+        $enabledPaymentMethods = app(PaymentSettings::class);
 
         if ($cartItems->isEmpty()) {
             return back()->with('error', 'Your cart is empty!');
@@ -87,7 +89,7 @@ class CartController extends Controller
 
         // dd($cartItems);
 
-        return view('checkout.index', compact('cartItems', 'zones'));
+        return view('checkout.index', compact('cartItems', 'zones', 'enabledPaymentMethods'));
     }
 
     protected function getCart()
