@@ -91,8 +91,8 @@ Ensure you have the following installed:
 
 ```bash
 # Clone the repository
-git clone https://gitlab.objects.ws/laravel/engy-food-delivery-training.git  
-cd engy-food-delivery-training
+git clone https://github.com/engyahmed7/food-tracking-system.git 
+cd food-tracking-system
 ```
 
 ```bash
