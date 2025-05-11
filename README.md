@@ -1,4 +1,5 @@
 # Food Tracking System
+[![Laravel](https://img.shields.io/badge/Laravel-10+-FF2D20?logo=laravel&logoColor=white )](https://laravel.com ) [![PHP](https://img.shields.io/badge/PHP-8.1+-777BB4?logo=php&logoColor=white )](https://www.php.net ) [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black )](https://developer.mozilla.org/en-US/docs/Web/JavaScript ) [![Stripe](https://img.shields.io/badge/Stripe-008CDD?logo=stripe&logoColor=white )](https://stripe.com ) [![PayPal](https://img.shields.io/badge/PayPal-00457C?logo=paypal&logoColor=white )](https://www.paypal.com ) [![Filament](https://img.shields.io/badge/Filament-3.x-000000?logo=filament&logoColor=F37921 )](https://filamentphp.com )
 
 > *A scalable Laravel-based e-commerce logistics solution for food delivery operations.*
 
