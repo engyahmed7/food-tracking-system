@@ -1,132 +1,218 @@
 # Food Tracking System
 
+> *A scalable Laravel-based e-commerce logistics solution for food delivery operations.*
+
+---
+
 ## Overview
 
-The Food Tracking System is a comprehensive solution designed for managing e-commerce logistics, specifically focused on shipping and payment integrations. This project includes an admin control panel built with Filament, real-time shipping data updates using Livewire, and a factory design pattern implementation for multiple payment gateways (Stripe, PayPal, and Cash on Delivery).
+The **Food Tracking System** is a comprehensive platform designed to streamline food delivery logistics using modern web development practices. Built on **Laravel**, it integrates **real-time shipping cost calculation**, **multi-gateway payment processing**, and an intuitive **Filament-powered admin dashboard**.
 
-## Features
+This system ensures extensibility through architectural patterns like the **Factory Design Pattern**, enabling seamless integration of new payment gateways without modifying existing logic.
 
-### Admin Control Panel
+---
 
--   Built with Filament for efficient management.
--   Features include:
-    -   Adding and managing shipping zones.
-    -   Adding countries and their available cities.
-    -   Creating new Filament users with specific roles.
-    -   Managing banners, featured products, and controlling the active/inactive status of products.
-    -   Modifying banner text for the front-end display.
+```mermaid
+graph TD
+    A[Frontend] --> B[Livewire]
+    B --> C[Laravel Backend]
+    C --> D[Filament Admin]
+    C --> E[Payment Factory]
+    E --> F[Stripe]
+    E --> G[PayPal]
+    E --> H[Cash on Delivery]
+    C --> I[Database]
+```
 
-### Real-Time Shipping Calculator
+---
 
--   Uses Livewire for dynamic and real-time shipping fee calculation.
--   Features:
-    -   Calculates shipping fees based on selected country and city.
-    -   Provides immediate feedback if shipping is unavailable for a location.
-    -   Updates total cost with shipping fees in real time.
+## Key Features
 
-### Payment Gateway Integration
+### Admin Control Panel (Built with Filament)
 
--   Implements the factory design pattern to support multiple payment methods:
-    -   Stripe
-    -   PayPal
-    -   Cash on Delivery
+- Manage **shipping zones**, **countries**, and **cities**
+- Add and assign roles to **Filament users**
+- Control product visibility via **active/inactive status**
+- Update **banners** and **featured products**
+- Customize **front-end banner texts**
 
-### Additional Features
+### Real-Time Shipping Calculator (Livewire-Powered)
 
--   RESTful APIs for retrieving countries and cities.
--   Efficient zone and rate management for shipping.
+- Dynamic shipping fee calculation based on selected:
+  - Country
+  - City
+- Instant feedback if shipping is unavailable
+- Auto-updates total cost including shipping
+
+### Multi-Gateway Payment Integration (Factory Design Pattern)
+
+Supports multiple payment gateways:
+- ✅ Stripe
+- ✅ PayPal
+- ✅ Cash on Delivery (COD)
+
+Admins can toggle these options dynamically from the dashboard without touching code.
+
+### RESTful APIs
+
+- Retrieve countries and cities via secure API endpoints
+- Efficient zone and rate management for scalable logistics
+
+---
 
 ## Technologies Used
 
--   **Backend**: Laravel Framework
--   **Frontend**: Livewire for real-time interactions
--   **Admin Panel**: Filament
--   **Payment Integration**: Stripe and PayPal
--   **Database**: MySQL
--   **Localization**: Support for global shipping zones and multi-country support
+| Layer       | Technology           |
+|------------|----------------------|
+| Backend    | Laravel 10+          |
+| Frontend   | Livewire + Blade     |
+| Admin UI   | FilamentPHP          |
+| Database   | MySQL                |
+| Payments   | Stripe, PayPal SDKs  |
+| Build Tool | Composer, NPM        |
 
-## Installation
+---
+
+## Installation Guide
 
 ### Prerequisites
 
--   PHP 8.1 or higher
--   Composer
--   MySQL
--   Node.js and npm (for frontend dependencies)
+Ensure you have the following installed:
+
+- PHP >= 8.1
+- Composer
+- MySQL
+- Node.js & npm
+
+---
 
 ### Steps
 
-1. Clone the repository:
-    ```bash
-    git clone https://gitlab.objects.ws/laravel/engy-food-delivery-training.git
-    cd engy-food-delivery-training
-    ```
-2. Install PHP dependencies:
-    ```bash
-    composer install
-    ```
-3. Install Node.js dependencies:
-    ```bash
-    npm install && npm run dev
-    ```
-4. Set up the environment variables:
-    ```bash
-    cp .env.example .env
-    ```
-    Configure the `.env` file with your database credentials and payment gateway API keys.
-5. Run database migrations and seeders:
-    ```bash
-    php artisan migrate --seed
-    ```
-6. Serve the application:
-    ```bash
-    php artisan serve
-    ```
+```bash
+# Clone the repository
+git clone https://gitlab.objects.ws/laravel/engy-food-delivery-training.git  
+cd engy-food-delivery-training
+```
+
+```bash
+# Install PHP dependencies
+composer install
+```
+
+```bash
+# Install and build frontend assets
+npm install && npm run dev
+```
+
+```bash
+# Create environment file
+cp .env.example .env
+```
+
+> Edit `.env` with your database credentials and payment gateway keys.
+
+```bash
+# Migrate and seed database
+php artisan migrate --seed
+```
+
+```bash
+# Serve the application
+php artisan serve
+```
+
+---
 
 ## Usage
 
-### Admin Panel
+### Accessing Admin Panel
 
-Access the admin panel at `/admin`.
+Navigate to:  
+👉 [http://localhost:8000/admin](http://localhost:8000/admin)
 
-### Admin User Management
+### Creating Admin Users
 
-To create a new Filament user, run the following command in the terminal:
+Run this command to create a Filament user:
 
 ```bash
 php artisan make:filament-user
 ```
 
-This command will prompt you to enter:
+Follow prompts to enter:
+- Email address
+- Password
 
-1. **Email address**: The email address of the user.
-2. **Password**: The password for the user.
+User will be added to the Filament admin system.
 
-After running the command, the user will be created and can access the admin panel with the provided credentials.
+---
 
-### Shipping Calculator
+## Payment Management
 
-The shipping calculator dynamically updates shipping costs based on the user's selected location and provides real-time feedback.
+Administrators can manage payment methods directly from the dashboard:
 
-### Payment Management
+1. Go to **Settings > Manage Payment**
+2. Toggle available methods:
+   - Stripe
+   - PayPal
+   - Cash on Delivery
 
-The system includes a dedicated payment management interface in the admin dashboard that allows administrators to:
+Changes are applied instantly across the checkout flow.
 
--   Enable/disable payment methods dynamically
--   Control available payment options including:
-    -   Stripe Payments
-    -   PayPal Integration
-    -   Cash on Delivery (COD)
+> 💡 Powered by the **Factory Design Pattern**, this system allows easy addition of new payment gateways in the future.
 
-Administrators can access these settings through:
+---
 
-1. Navigate to the admin dashboard
-2. Go to Settings > Manage Payment
-3. Toggle payment methods on/off as needed
-4. Save changes to immediately affect the checkout options available to customers
+## Factory Design Pattern Architecture
 
-This provides flexible control over payment methods without requiring code changes.
+To support dynamic switching between payment gateways, we use the **Factory Design Pattern**, which decouples payment logic from the client code.
 
-### Payment Integration
+### Class Diagram
 
-During checkout, users can select a preferred payment method. The factory design pattern ensures a seamless switch between payment gateways.
+```mermaid
+classDiagram
+    class PaymentGatewayFactory {
+        +makePaymentGateway(string $type): PaymentGateway
+    }
+
+    class PaymentGateway {
+        <<interface>>
+        +process(array $data): mixed
+    }
+
+    class StripeGateway {
+        +process(array $data): mixed
+    }
+
+    class PayPalGateway {
+        +process(array $data): mixed
+    }
+
+    class CashOnDeliveryGateway {
+        +process(array $data): mixed
+    }
+
+    PaymentGatewayFactory --> PaymentGateway : returns
+    StripeGateway --|> PaymentGateway
+    PayPalGateway --|> PaymentGateway
+    CashOnDeliveryGateway --|> PaymentGateway
+```
+
+---
+
+###  How It Works
+
+1. **Client Code** calls `PaymentGatewayFactory::makePaymentGateway($type)` with a type like `'stripe'`, `'paypal'`, or `'cash_on_delivery'`.
+2. The **Factory** inspects the type and returns an instance of the corresponding **gateway class**.
+3. Each gateway implements the same interface (`PaymentGateway`) and provides its own logic inside the `process()` method.
+4. The client can now safely call `process()` without knowing which specific gateway is being used.
+
+---
+
+## Contributing
+
+Contributions are welcome! If you'd like to improve any of these plugins or add new features:
+
+1. Fork the repo
+2. Create a feature branch
+3. Submit a pull request
+
